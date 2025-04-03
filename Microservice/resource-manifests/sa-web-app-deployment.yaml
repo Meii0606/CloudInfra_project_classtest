@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sa-web-app
+  labels:
+    app: sa-web-app
+spec:
+  selector:
+    matchLabels:
+      app: sa-web-app
+  replicas: 2
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: 
+      maxUnavailable: 1
+      maxSurge: 1 
+  template:
+    metadata:
+      labels:
+        app: sa-web-app
+    spec:
+      containers:
+      - image: gcr.io/alien-waters-448904-q1/sentiment-analysis-webapp:latest
+        imagePullPolicy: Always
+        name: sa-web-app
+        env:
+          - name: SA_LOGIC_API_URL
+            value: "http://34.118.228.214:80"
+        ports:
+          - containerPort: 8080
