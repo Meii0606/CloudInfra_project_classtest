@@ -1,5 +1,15 @@
 This project first deploy a sentiment analysis microservice with GKE, the use Terraform configuration deploys a Jenkins and SonarQube pipeline onto Google Kubernetes Engine (GKE) using the pre-configured Docker images to check the static code of microservice here. Also, using terraform set up a hadoop cluster on Google Dataproc to handle the hadoop task.
 
+## Architecture
+
+This deployment:
+
+1. Creates a GKE cluster in your specified GCP project and region
+2. Deploys the pre-configured Jenkins and SonarQube containers
+3. Sets up persistent storage for both services
+4. Initializes the storage with backup data from Google Cloud Storage
+5. Exposes both services with external IPs for access 
+
 ## Prerequisites
 
 - Google Cloud Platform account
@@ -62,17 +72,6 @@ sonarqube_url = "http://34.48.104.105:9000"
 - Jenkins will be available at: http://<jenkins_external_ip>:8080
 - SonarQube will be available at: http://<sonarqube_external_ip>:9000
 
-## Important Note
-
-When using Jenkins with SonarQube, make sure to use `sonarqube` as the hostname in your SonarQube URL configuration within Jenkins, not the external IP. This is because the containers communicate within the Kubernetes network.
-
-Example in Jenkins pipeline:
-```
-sonar-scanner -Dsonar.host.url=http://sonarqube:9000 ...
-```
-6. Once you
-
-
 ## Cleanup
 
 To remove all resources created by this Terraform configuration:
@@ -80,16 +79,6 @@ To remove all resources created by this Terraform configuration:
 ```bash
 terraform destroy
 ```
-
-## Architecture
-
-This deployment:
-
-1. Creates a GKE cluster in your specified GCP project and region
-2. Deploys the pre-configured Jenkins and SonarQube containers
-3. Sets up persistent storage for both services
-4. Initializes the storage with backup data from Google Cloud Storage
-5. Exposes both services with external IPs for access 
 
 ## Reference
 - Farag, Mohamed. 14-848 Cloud Infrastructure Course Lectures and Slides. Carnegie Mellon University, 2024.
